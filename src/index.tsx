@@ -6,7 +6,7 @@ import {
   UseMultipleSelectionProps
 } from 'downshift'
 import matchSorter from 'match-sorter'
-import Highlighter from 'react-highlight-words'
+// import Highlighter from 'react-highlight-words'
 import useDeepCompareEffect from 'react-use/lib/useDeepCompareEffect'
 import { FormLabel, FormLabelProps } from '@chakra-ui/form-control'
 import {
@@ -40,6 +40,7 @@ export interface CUIAutoCompleteProps<T extends Item>
   itemRenderer?: (item: T) => string | JSX.Element
   labelStyleProps?: FormLabelProps
   inputStyleProps?: InputProps
+  onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   toggleButtonStyleProps?: ButtonProps
   tagStyleProps?: TagProps
   listStyleProps?: BoxProps
@@ -88,6 +89,7 @@ export const CUIAutoComplete = <T extends Item>(
     selectedIconProps,
     listItemStyleProps,
     onCreateItem,
+    onInputChange,
     icon,
     hideToggleButton = false,
     disableCreateItem = false,
@@ -277,6 +279,7 @@ export const CUIAutoComplete = <T extends Item>(
         ) : (
           <>
             <Input
+              onChange={onInputChange}
               {...inputStyleProps}
               {...getInputProps(
                 getDropdownProps({
@@ -340,11 +343,7 @@ export const CUIAutoComplete = <T extends Item>(
                     {itemRenderer ? (
                       itemRenderer(item)
                     ) : (
-                      <Highlighter
-                        autoEscape
-                        searchWords={[inputValue || '']}
-                        textToHighlight={defaultItemRenderer(item)}
-                      />
+                      <>{defaultItemRenderer(item)}</>
                     )}
                   </Box>
                 )}
